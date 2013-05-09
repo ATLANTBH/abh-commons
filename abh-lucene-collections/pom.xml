@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.atlantbh.commons</groupId>
+    <artifactId>abh-commons-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>abh-lucene-collections</artifactId>
+  <packaging>jar</packaging>
+  <name>ABH Common Lucene Collections</name>
+  
+  <description>Contains Map, Set and Iterator implementations that use Lucene index for storing objects</description>
+  
+  <dependencies>
+  	<dependency>
+		<groupId>com.atlantbh.commons</groupId>
+		<artifactId>abh-utils</artifactId>
+		<version>${parent.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>commons-codec</groupId>
+		<artifactId>commons-codec</artifactId>
+		<version>${commons-codec.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-core</artifactId>
+		<version>${lucene.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-analyzers-common</artifactId>
+		<version>${lucene.version}</version>
+	</dependency>
+  </dependencies>
+</project>

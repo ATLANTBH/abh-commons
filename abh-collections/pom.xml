@@ -1,0 +1,14 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.atlantbh.commons</groupId>
+    <artifactId>abh-commons-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>abh-collections</artifactId>
+  <packaging>jar</packaging>
+  <name>ABH Common Collections</name>
+  
+  <description>Extensions and utility classes related to Java Collections Framework</description>
+  
+</project>

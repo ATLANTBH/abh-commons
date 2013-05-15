@@ -11,7 +11,11 @@ public class LuceneSet<E> extends LuceneWrapper implements Set<E> {
 	private final LuceneAdapter<E> adapter;
 	
 	public LuceneSet(LuceneAdapter<E> adapter) {
-		super(true);
+		this(adapter, false);
+	}
+	
+	public LuceneSet(LuceneAdapter<E> adapter, boolean inMemory) {
+		super(inMemory);
 		this.adapter = adapter;
 	}
 

@@ -1,17 +1,22 @@
 package com.atlantbh.collections.lucene;
 
+import java.io.Closeable;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.AtomicReader;
+import org.apache.lucene.index.AtomicReaderContext;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.DocsEnum;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.DocIdSetIterator;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -20,7 +25,7 @@ import org.apache.lucene.util.Version;
 
 import com.atlantbh.utils.file.FileUtils;
 
-public class LuceneWrapper {
+public class LuceneWrapper implements Closeable {
 	private final static Query SIZE_QUERY = new MatchAllDocsQuery();
 	
 	protected IndexWriter iw;
@@ -110,7 +115,24 @@ public class LuceneWrapper {
 	}
 	
 	public Document getDocument(Term term) {
-		return getDocument(new TermQuery(term));
+		reloadReader();
+		try {
+			List<AtomicReaderContext> subreaders = ir.leaves();
+			
+			if (subreaders != null) {
+				for (AtomicReaderContext arc : subreaders) {
+					AtomicReader ar = arc.reader();
+					DocsEnum docs = ar.termDocsEnum(term);
+					if (docs != null && docs.nextDoc() != DocIdSetIterator.NO_MORE_DOCS) {
+						
+						return ar.document(docs.docID());
+					}
+				}
+			} 
+		} catch (IOException e) {
+			throw new LuceneCollectionException("Error retrieving document.", e);
+		}
+		return null;
 		// TODO use index reader directly
 	}
 	
@@ -154,6 +176,7 @@ public class LuceneWrapper {
 		}
 	}
 	
+	@Override
 	public void close() {
 		// close reader
 		try {
@@ -173,5 +196,11 @@ public class LuceneWrapper {
 		} catch (Exception e) {
 			// ignore it
 		}
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		close();
 	}
 }
